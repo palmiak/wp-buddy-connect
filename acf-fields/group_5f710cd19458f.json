@@ -1,0 +1,249 @@
+{
+    "key": "group_5f710cd19458f",
+    "title": "Buddy Works",
+    "fields": [
+        {
+            "key": "field_5f710d4d6e06b",
+            "label": "Run Piepline",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acfe_permissions": "",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5f7110c05077d",
+            "label": "Missing API",
+            "name": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f710cdd6e068",
+                        "operator": "==empty"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acfe_permissions": "",
+            "message": "Before you can run it, first fill the API, Pipeline and Project field.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_5f710d6e6e06c",
+            "label": "Run",
+            "name": "run",
+            "type": "acfe_button",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acfe_permissions": "",
+            "button_value": "Run pipeline",
+            "button_type": "button",
+            "button_class": "button button-secondary",
+            "button_id": "buddy-run-pipeline",
+            "button_before": "<div id=\"buddy-run-status\"><\/div>",
+            "button_after": "",
+            "button_ajax": 1
+        },
+        {
+            "key": "field_5f710db86e06d",
+            "label": "Buddy options",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acfe_permissions": "",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5f710cdd6e068",
+            "label": "API Key",
+            "name": "api_key",
+            "type": "password",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acfe_permissions": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_5f710f53c94c2",
+            "label": "Get projects",
+            "name": "get_projects",
+            "type": "acfe_button",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f710cdd6e068",
+                        "operator": "!=empty"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "acfe_permissions": "",
+            "button_value": "Get projects",
+            "button_type": "submit",
+            "button_class": "button button-secondary",
+            "button_id": "buddy-get-projects",
+            "button_before": "<div id=\"buddy-get-projects-status\"><\/div>",
+            "button_after": "",
+            "button_ajax": 1
+        },
+        {
+            "key": "field_5f710cf86e069",
+            "label": "Project",
+            "name": "project",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f710cdd6e068",
+                        "operator": "!=empty"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "acfe_permissions": "",
+            "choices": [],
+            "default_value": false,
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_5f710fa1c94c3",
+            "label": "Get pipelines",
+            "name": "get_pipelines",
+            "type": "acfe_button",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f710cf86e069",
+                        "operator": "!=empty"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "acfe_permissions": "",
+            "button_value": "Get pipelines",
+            "button_type": "submit",
+            "button_class": "button button-secondary",
+            "button_id": "buddy-get-pipelines",
+            "button_before": "<div id=\"buddy-get-pipelines-status\"><\/div>",
+            "button_after": "",
+            "button_ajax": 1
+        },
+        {
+            "key": "field_5f710d2b6e06a",
+            "label": "Pipeline",
+            "name": "pipeline",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f710cf86e069",
+                        "operator": "!=empty"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "acfe_permissions": "",
+            "choices": [],
+            "default_value": false,
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "buddy-connect-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "seamless",
+    "label_placement": "left",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "acfe_display_title": "",
+    "acfe_autosync": [
+        "json"
+    ],
+    "acfe_permissions": "",
+    "acfe_form": 0,
+    "acfe_meta": "",
+    "acfe_note": "",
+    "modified": 1602192766
+}
