@@ -24,30 +24,23 @@ class BuddyConnect {
 		$this->api_key  = get_field( 'api_key', 'options' );
 		$this->project  = get_field( 'project', 'options' );
 		$this->pipeline = get_field( 'pipeline', 'options' );
-
-		$this->domain = 'freshpixels-1';
+		$this->domain   = get_field( 'domain', 'options' );
 
 	}
 
 	function init() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'buddy_enqueue_admin_script' ) );
-
-		add_action( 'acfe/fields/button/name=get_projects', array( $this, 'buddy_get_projects' ), 10, 2 );
-
-		add_action( 'acfe/fields/button/name=get_pipelines', array( $this, 'buddy_get_pipelines' ), 10, 2 );
-
-		add_action( 'acfe/fields/button/name=run', array( $this, 'buddy_run_pipeline' ), 10, 2 );
-
-		add_filter( 'acf/prepare_field/name=project', array( $this, 'prepare_field' ) );
-
-		add_filter( 'acf/prepare_field/name=pipeline', array( $this, 'prepare_field' ) );
+		add_action( 'acf/init', array( $this, 'admin' ) );
+		add_filter( 'acf/settings/load_json', array( $this, 'acf_json_load_point' ) );
 
 		add_action( 'wp_ajax_nopriv_get_run_status', array( $this, 'get_run_status' ) );
 		add_action( 'wp_ajax_get_run_status', array( $this, 'get_run_status' ) );
+		add_action( 'acfe/fields/button/name=get_projects', array( $this, 'buddy_get_projects' ), 10, 2 );
+		add_action( 'acfe/fields/button/name=get_pipelines', array( $this, 'buddy_get_pipelines' ), 10, 2 );
+		add_action( 'acfe/fields/button/name=run', array( $this, 'buddy_run_pipeline' ), 10, 2 );
+		add_filter( 'acf/prepare_field/name=project', array( $this, 'prepare_field' ) );
+		add_filter( 'acf/prepare_field/name=pipeline', array( $this, 'prepare_field' ) );
+        add_action( 'acf/enqueue_scripts', array( $this, 'buddy_enqueue_admin_script' ) );
 
-		add_filter( 'acf/settings/load_json', array( $this, 'acf_json_load_point' ) );
-
-		add_action( 'acf/init', array( $this, 'admin' ) );
 	}
 
 	function admin() {
@@ -73,12 +66,18 @@ class BuddyConnect {
 	}
 
 	public function buddy_get_projects( $field, $post_id ) {
+		$this->security_check();
+
 		$response = array(
 			'status'  => 'failed',
 			'message' => 'Something went wrong',
 		);
 
 		$ret = array();
+
+		if ( isset( $_POST['domain'] ) ) {
+			$this->domain = $_POST['domain'];
+		}
 
 		if ( ! empty( $this->api_key ) ) {
 			$buddy = new Buddy\Buddy(
@@ -115,12 +114,18 @@ class BuddyConnect {
 	}
 
 	public function buddy_get_pipelines( $field, $post_id ) {
+		$this->security_check();
+
 		$response = array(
 			'status'  => 'failed',
 			'message' => 'Something went wrong',
 		);
 
 		$ret = array();
+
+		if ( isset( $_POST['domain'] ) ) {
+			$this->domain = $_POST['domain'];
+		}
 
 		if ( isset( $_POST['project'] ) ) {
 			$this->project = $_POST['project'];
@@ -161,6 +166,8 @@ class BuddyConnect {
 	}
 
 	public function prepare_field( $field ) {
+		$this->security_check();
+
 		$fields = array(
 			'project'  => 'buddy_works_projects_api',
 			'pipeline' => 'buddy_works_pipelines_api',
@@ -184,6 +191,8 @@ class BuddyConnect {
 	}
 
 	public function buddy_run_pipeline( $field, $post_id ) {
+		$this->security_check();
+
 		$response = array(
 			'status'  => 'failed',
 			'message' => 'Something went wrong',
@@ -227,6 +236,8 @@ class BuddyConnect {
 	}
 
 	public function get_run_status() {
+		$this->security_check();
+
 		$response = array(
 			'status'  => 'failed',
 			'message' => 'Something went wrong',
@@ -260,6 +271,17 @@ class BuddyConnect {
 	public function buddy_enqueue_admin_script( $hook ) {
 		wp_enqueue_script( 'buddy_script', plugin_dir_url( __FILE__ ) . 'static/js/buddy-works.js', array(), '1.0' );
 		wp_localize_script( 'buddy_script', 'buddy_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+	}
+
+	public function security_check() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			$response = array(
+				'status'  => 'failed',
+				'message' => 'You\'re are not allowed to do this.',
+			);
+
+			wp_send_json( $response );
+		}
 	}
 }
 
